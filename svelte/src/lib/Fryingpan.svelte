@@ -18,7 +18,6 @@
 	let duration = $state(dsecs*1000);
   let seconds = $derived(duration / 1000)
 	let elapsed = $state(dsecs*1000);
-  let secondsLeft = $derived((duration - elapsed) / 1000);
   let progress = $derived(1-elapsed / duration);
 
 	onMount(() => {
@@ -63,13 +62,11 @@
   }
 
   function handleFocus() {
-    box.style.color = '#fff';
     if (box.value == fire) {
         box.value = '';
     }
   }
   function handleBlur() {
-    box.style.color = '#999';
     if (box.value == '') {
       box.value = fire;
     }
@@ -77,13 +74,38 @@
 
 </script>
 
-<span>
-	<progress value={progress}></progress>
-  {secondsLeft.toFixed(1)}s
-  | words: {wc}
-</span>
+<style>
+.oven {
+  width: 30em;
+}
 
-<div class='card'>
+progress {
+  width: 20em;
+}
+
+textarea {
+  width: 25em;
+  height: 10em;
+
+  border-radius: 8px;
+  border: 1px solid #646cff;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-family: inherit;
+  transition: border-color 0.25s;
+}
+
+.slider input,
+.slider span {
+  display: inline-block;
+  vertical-align: middle;
+}
+</style>
+
+<div class='oven'>
+
+  <progress value={progress}></progress>
+  
   <textarea
     bind:this={box}
     bind:value={contents}
@@ -91,14 +113,13 @@
     onfocus={handleFocus}
     onblur={handleBlur}
   ></textarea>
+  
+  <div class='slider'>
+    <input type='range' min=1000 max=30000 step=1000
+      bind:value={duration}
+      onchange={handleInput}
+      />
+    <span>{seconds}s</span>
+  </div>
+
 </div>
-
-
-<label>
-	duration:
-	<input type="range" min=1000 max=30000 step=1000
-    bind:value={duration}
-    onchange={handleInput}
-    />
-  {seconds}s
-</label>
