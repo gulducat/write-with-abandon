@@ -40,6 +40,10 @@ h1 {
   text-align: center;
 }
 
+img#hole {
+  width: 25px;
+}
+
 .card {
   padding: 1em;
 }

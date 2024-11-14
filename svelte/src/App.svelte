@@ -1,11 +1,10 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
+  import hole from '/blackhole.svg'
   import Fryingpan from './lib/Fryingpan.svelte'
 </script>
 
 <main>
-  <h1>🔥 Write with Abandon 🔥</h1>
+  <img id="hole" src={hole} alt="black hole" />
 
   <div class="card">
     <Fryingpan />
