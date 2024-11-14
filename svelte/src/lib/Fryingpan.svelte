@@ -14,7 +14,7 @@
   let contents = $state('');
   let wc = $state(0);
   
-  const dsecs = 2;
+  const dsecs = localStorage['secs'] || 2
 	let duration = $state(dsecs*1000);
   let seconds = $derived(duration / 1000)
 	let elapsed = $state(dsecs*1000);
@@ -59,6 +59,7 @@
   function handleInput() {
     elapsed = 0;
     wc = countWords(box.value);
+    localStorage['secs'] = duration / 1000;
   }
 
   function handleFocus() {
