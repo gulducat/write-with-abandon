@@ -5,9 +5,13 @@
 <script>
 	import { onMount } from 'svelte';
 
-  const prompt = 'scream at the void';
+  /**
+     * @type {HTMLTextAreaElement}
+     */
+  let box;
+
   const fire = '🔥';
-  let box = $state(prompt);
+  let contents = $state('');
   let wc = $state(0);
   
   const dsecs = 2;
@@ -27,12 +31,14 @@
         time - last_time,
         duration - elapsed);
 
-      if (progress <= 0 && box != fire) {
-        box = fire;
+      if (progress <= 0 && contents != fire && contents != '') {
+        contents = fire;
       }
 
 			last_time = time;
 		});
+
+    box.focus();
 
 		return () => {
 			cancelAnimationFrame(frame);
@@ -50,22 +56,21 @@
   	return t.split(/\s+/).length;
   }
 
-  function handleInput(e) {
+  function handleInput() {
     elapsed = 0;
-    wc = countWords(e.target.value);
+    wc = countWords(box.value);
   }
 
-  function handleFocus(e) {
-    switch (e.target.value) {
-      case prompt:
-      case fire:
-        e.target.value = '';
-        break;
+  function handleFocus() {
+    box.style.color = '#fff';
+    if (box.value == fire) {
+        box.value = '';
     }
   }
-  function handleBlur(e) {
-    if (e.target.value == '') {
-      e.target.value = prompt;
+  function handleBlur() {
+    box.style.color = '#999';
+    if (box.value == '') {
+      box.value = fire;
     }
   }
 
@@ -78,8 +83,9 @@
 </span>
 
 <div class='card'>
-  <textarea 
-    bind:value={box}
+  <textarea
+    bind:this={box}
+    bind:value={contents}
     oninput={handleInput}
     onfocus={handleFocus}
     onblur={handleBlur}
