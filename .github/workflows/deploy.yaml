@@ -1,0 +1,36 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        required: true
+        default: main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      pages: write
+    name: Deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          branch: ${{ inputs.branch }}
+      - name: Check
+        run: npm install && npm run check
+        working-directory: 'svelte'
+      - name: Build
+        run: npm run build
+        working-directory: 'svelte'
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'svelte/dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
