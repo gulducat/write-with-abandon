@@ -112,6 +112,7 @@ textarea {
     oninput={handleInput}
     onfocus={handleFocus}
     onblur={handleBlur}
+    spellcheck="false"
   ></textarea>
   
   <div class='slider'>
