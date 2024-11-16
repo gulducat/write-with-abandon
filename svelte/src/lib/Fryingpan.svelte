@@ -3,56 +3,51 @@
 <!-- https://eugenkiss.github.io/7guis/tasks#timer -->
 
 <script>
-	import { onMount } from 'svelte';
+  import { onMount } from 'svelte';
 
   /**
-     * @type {HTMLTextAreaElement}
-     */
+    * @type {HTMLTextAreaElement}
+    */
   let box;
 
   const fire = '🔥';
   let contents = $state('');
   let wc = $state(0);
-  
+
   const dsecs = localStorage['secs'] || 2
-	let duration = $state(dsecs*1000);
+  let duration = $state(dsecs*1000);
   let seconds = $derived(duration / 1000)
-	let elapsed = $state(dsecs*1000);
+  let elapsed = $state(dsecs*1000);
   let progress = $derived(1-elapsed / duration);
 
-	onMount(() => {
-		let last_time = performance.now();
+  onMount(() => {
+    box.focus();
 
-		let frame = requestAnimationFrame(function update(time) {
-			frame = requestAnimationFrame(update);
+    let last_time = performance.now();
+    let frame = requestAnimationFrame(function update(time) {
+      frame = requestAnimationFrame(update);
 
-			elapsed += Math.min(
-        time - last_time,
-        duration - elapsed);
-
+      elapsed += Math.min(time-last_time, duration-elapsed);
       if (progress <= 0 && contents != fire && contents != '') {
         contents = fire;
       }
+      last_time = time;
+    });
 
-			last_time = time;
-		});
-
-    box.focus();
-
-		return () => {
-			cancelAnimationFrame(frame);
-		};
-	});
+    return () => {
+      cancelAnimationFrame(frame);
+    };
+  });
 
   /**
-     * @param {string} s 
-     */
+    * @param {string} s
+    */
   function countWords(s) {
     let t = s.trim()
     if (t == '') {
       return 0;
     }
-  	return t.split(/\s+/).length;
+    return t.split(/\s+/).length;
   }
 
   function handleInput() {
