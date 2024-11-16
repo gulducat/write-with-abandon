@@ -23,6 +23,16 @@
   onMount(() => {
     box.focus();
 
+    box.style['width'] = localStorage['width'] || '25em';
+    box.style['height'] = localStorage['height'] || '10em';
+    const resizeObserver = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        localStorage['width'] = entry.contentRect.width+'px';
+        localStorage['height'] = entry.contentRect.height+'px';
+      }
+    });
+    resizeObserver.observe(box);
+
     let last_time = performance.now();
     let frame = requestAnimationFrame(function update(time) {
       frame = requestAnimationFrame(update);
@@ -57,12 +67,12 @@
   }
 
   function handleFocus() {
-    if (box.value == fire) {
+    if (box?.value == fire) {
         box.value = '';
     }
   }
   function handleBlur() {
-    if (box.value == '') {
+    if (box?.value == '') {
       box.value = fire;
     }
   }
@@ -70,18 +80,12 @@
 </script>
 
 <style>
-.oven {
-  width: 30em;
-}
-
 progress {
   width: 20em;
 }
 
 textarea {
-  width: 25em;
-  height: 10em;
-
+  /* width and height set in script */
   border-radius: 8px;
   border: 1px solid #646cff;
   padding: 0.6em 1.2em;
@@ -99,8 +103,10 @@ textarea {
 
 <div class='oven'>
 
-  <progress value={progress}></progress>
-  
+  <div>
+    <progress value={progress}></progress>
+  </div>
+
   <textarea
     bind:this={box}
     bind:value={contents}
@@ -109,7 +115,7 @@ textarea {
     onblur={handleBlur}
     spellcheck="false"
   ></textarea>
-  
+
   <div class='slider'>
     <input type='range' min=1000 max=30000 step=1000
       bind:value={duration}
