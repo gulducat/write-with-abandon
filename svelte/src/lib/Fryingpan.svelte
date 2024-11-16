@@ -14,10 +14,10 @@
   let contents = $state('');
   let wc = $state(0);
 
-  const dsecs = localStorage['secs'] || 2
-  let duration = $state(dsecs*1000);
+  const secs = localStorage['secs'] || 2
+  let duration = $state(secs*1000);
   let seconds = $derived(duration / 1000)
-  let elapsed = $state(dsecs*1000);
+  let elapsed = $state(secs*1000);
   let progress = $derived(1-elapsed / duration);
 
   onMount(() => {
@@ -61,7 +61,7 @@
   }
 
   function handleInput() {
-    elapsed = 0;
+    elapsed = -1000; // pause a sec before countdown
     wc = countWords(box.value);
     localStorage['secs'] = duration / 1000;
   }
@@ -117,11 +117,11 @@ textarea {
   ></textarea>
 
   <div class='slider'>
-    <input type='range' min=1000 max=30000 step=1000
+    <input type='range' min=1000 max=29000 step=1000
       bind:value={duration}
       onchange={handleInput}
       />
-    <span>{seconds}s</span>
+    <span>{seconds+1}s</span>
   </div>
 
 </div>
