@@ -94,10 +94,18 @@ textarea {
   transition: border-color 0.25s;
 }
 
-.slider input,
-.slider span {
-  display: inline-block;
+#slider {
+  float: left;
   vertical-align: middle;
+  margin-left: 1em;
+}
+#slider input {
+  width: 15em;
+}
+#wordcount {
+  float: right;
+  text-align: right;
+  margin-right: 1em;
 }
 </style>
 
@@ -116,12 +124,15 @@ textarea {
     spellcheck="false"
   ></textarea>
 
-  <div class='slider'>
-    <input type='range' min=1000 max=29000 step=1000
-      bind:value={duration}
-      onchange={handleInput}
+  <div>
+    <span id='wordcount'>{wc} words</span>
+    <span id='slider'>
+      <input type='range' min=1000 max=29000 step=1000
+        bind:value={duration}
+        onchange={handleInput}
       />
-    <span>{seconds+1}s</span>
+      {seconds+1}s
+    </span>
   </div>
 
 </div>
