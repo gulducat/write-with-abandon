@@ -1,5 +1,7 @@
 name: Deploy
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       branch:
@@ -17,7 +19,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          branch: ${{ inputs.branch }}
+          branch: ${{ inputs.branch || 'main' }}
       - name: Check
         run: npm install && npm run check
         working-directory: 'svelte'
