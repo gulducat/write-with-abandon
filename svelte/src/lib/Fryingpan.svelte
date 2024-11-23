@@ -23,8 +23,8 @@
   onMount(() => {
     box.focus();
 
-    box.style['width'] = localStorage['width'] || '25em';
-    box.style['height'] = localStorage['height'] || '10em';
+    box.style['width'] = localStorage['width'] || '25rem';
+    box.style['height'] = localStorage['height'] || '10rem';
     const resizeObserver = new ResizeObserver(entries => {
       for (let entry of entries) {
         localStorage['width'] = entry.contentRect.width+'px';
@@ -71,27 +71,14 @@
         box.value = '';
     }
   }
-  function handleBlur() {
-    if (box?.value == '') {
-      box.value = fire;
-    }
-  }
 
 </script>
 
 <style>
 progress {
-  width: 20em;
-}
-
-textarea {
-  /* width and height set in script */
-  border-radius: 8px;
-  border: 1px solid #646cff;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-family: inherit;
-  transition: border-color 0.25s;
+  width: 25em;
+  height: 0.5em;
+  margin-bottom: 7px;
 }
 
 #slider {
@@ -100,7 +87,16 @@ textarea {
   margin-left: 1em;
 }
 #slider input {
-  width: 15em;
+  width: 10rem;
+}
+#slider span {
+  float: right;
+  margin-left: 8px;
+}
+@-moz-document url-prefix() {
+  #slider span {
+    margin-top: 4px;
+  }
 }
 #wordcount {
   float: right;
@@ -116,23 +112,23 @@ textarea {
   </div>
 
   <textarea
+    name="void"
     bind:this={box}
     bind:value={contents}
     oninput={handleInput}
     onfocus={handleFocus}
-    onblur={handleBlur}
     spellcheck="false"
   ></textarea>
 
   <div>
     <span id='wordcount'>{wc} words</span>
-    <span id='slider'>
+    <div id='slider'>
       <input type='range' min=1000 max=29000 step=1000
         bind:value={duration}
         onchange={handleInput}
       />
-      {seconds+1}s
-    </span>
+      <span>{seconds+1}s</span>
+    </div>
   </div>
 
 </div>
